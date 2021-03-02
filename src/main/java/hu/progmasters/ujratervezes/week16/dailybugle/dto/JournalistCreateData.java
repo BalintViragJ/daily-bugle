@@ -9,35 +9,10 @@ public class JournalistCreateData {
     private String address;
     private String email;
     private int telephoneNumber;
-    private String birthplace;
     private LocalDateTime created;
     private LocalDateTime edited;
     private boolean active;
 
-
-    public LocalDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
-
-    public LocalDateTime getEdited() {
-        return edited;
-    }
-
-    public void setEdited(LocalDateTime edited) {
-        this.edited = edited;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
 
     public String getName() {
         return name;
@@ -71,13 +46,31 @@ public class JournalistCreateData {
         this.telephoneNumber = telephoneNumber;
     }
 
-    public String getBirthplace() {
-        return birthplace;
+    public LocalDateTime getCreated() {
+        return created;
     }
 
-    public void setBirthplace(String birthplace) {
-        this.birthplace = birthplace;
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
     }
+
+    public LocalDateTime getEdited() {
+        return edited;
+    }
+
+    public void setEdited(LocalDateTime edited) {
+        this.edited = edited;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+
 }
 
 

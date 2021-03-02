@@ -28,7 +28,7 @@ public class JournalistRepository {
             journalist.setName(resultSet.getString("name"));
             journalist.setAddress(resultSet.getString("address"));
             journalist.setEmail(resultSet.getString("email"));
-            journalist.setTelephoneNumber(resultSet.getInt("telephone_number"));
+            journalist.setTelephoneNumber(resultSet.getString("telephone_number"));
             return journalist;
         });
     }
@@ -41,7 +41,7 @@ public class JournalistRepository {
                 journalist.setName(resultSet.getString("name"));
                 journalist.setAddress(resultSet.getString("address"));
                 journalist.setEmail(resultSet.getString("email"));
-                journalist.setTelephoneNumber(resultSet.getInt("telephone_number"));
+                journalist.setTelephoneNumber(resultSet.getString("telephone_number"));
                 return journalist;
             });
         } catch (EmptyResultDataAccessException e) {

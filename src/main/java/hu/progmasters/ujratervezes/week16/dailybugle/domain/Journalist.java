@@ -6,7 +6,7 @@ public class Journalist {
     private String name;
     private String address;
     private String email;
-    private int telephoneNumber;
+    private String telephoneNumber;
 
     public Journalist() {
     }
@@ -43,13 +43,11 @@ public class Journalist {
         this.email = email;
     }
 
-    public int getTelephoneNumber() {
+    public String getTelephoneNumber() {
         return telephoneNumber;
     }
 
-    public void setTelephoneNumber(int telephoneNumber) {
+    public void setTelephoneNumber(String telephoneNumber) {
         this.telephoneNumber = telephoneNumber;
     }
-
-
 }

@@ -8,7 +8,7 @@ public class JournalistCreateData {
     private String name;
     private String address;
     private String email;
-    private int telephoneNumber;
+    private String telephoneNumber;
     private LocalDateTime created;
     private LocalDateTime edited;
     private boolean active;
@@ -38,11 +38,11 @@ public class JournalistCreateData {
         this.email = email;
     }
 
-    public int getTelephoneNumber() {
+    public String getTelephoneNumber() {
         return telephoneNumber;
     }
 
-    public void setTelephoneNumber(int telephoneNumber) {
+    public void setTelephoneNumber(String telephoneNumber) {
         this.telephoneNumber = telephoneNumber;
     }
 

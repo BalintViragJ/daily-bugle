@@ -18,7 +18,7 @@ public class JournalistController {
     private JournalistService journalistService;
 
     @Autowired
-    public JournalistController(JournalistController journalistController){
+    public JournalistController(JournalistService journalistService){
         this.journalistService = journalistService;
     }
 
@@ -27,7 +27,7 @@ public class JournalistController {
 
         List<Journalist> journalists = journalistService.getJournalists();
         //????
-        return new ResponseEntity<List<Journalist>>(journalists, HttpStatus.OK);
+        return new ResponseEntity<>(journalists, HttpStatus.OK);
    }
 
    @GetMapping("/{id}")

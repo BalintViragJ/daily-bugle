@@ -2,22 +2,27 @@ package hu.progmasters.ujratervezes.week16.dailybugle.dto;
 
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Journalist;
 
-import java.sql.Timestamp;
+public class ArticleLister {
 
-public class ArticleCreateData {
-
-
-    private int journalistId;
+    private int id;
+    private String journalistName;
     private String title;
     private String synopsis;
-    private String text;
 
-    public int getJournalistId() {
-        return journalistId;
+    public int getId() {
+        return id;
     }
 
-    public void setJournalistId(int journalistId) {
-        this.journalistId = journalistId;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getJournalistName() {
+        return journalistName;
+    }
+
+    public void setJournalistName(String journalistName) {
+        this.journalistName = journalistName;
     }
 
     public String getTitle() {
@@ -34,13 +39,5 @@ public class ArticleCreateData {
 
     public void setSynopsis(String synopsis) {
         this.synopsis = synopsis;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 }

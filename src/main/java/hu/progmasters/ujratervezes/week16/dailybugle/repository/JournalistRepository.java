@@ -36,14 +36,15 @@ public class JournalistRepository {
     public Journalist findJournalist(int id) {
         try {
             String sql = "SELECT * FROM journalist WHERE id = ?";
-            return jdbcTemplate.queryForObject(sql, (resultSet, rowNumber) -> {
+            return jdbcTemplate.queryForObject(sql, new Object[]{id},((resultSet, rowNumber) -> {
                 Journalist journalist = new Journalist();
+                journalist.setId(resultSet.getInt("id"));
                 journalist.setName(resultSet.getString("name"));
                 journalist.setAddress(resultSet.getString("address"));
                 journalist.setEmail(resultSet.getString("email"));
                 journalist.setTelephoneNumber(resultSet.getInt("telephone_number"));
                 return journalist;
-            });
+            }));
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -77,7 +78,8 @@ public class JournalistRepository {
         String sql = "UPDATE journalist SET name = ?, address = ?, email = ?, telephone_number = ?, edited = ?, active = ?  WHERE id = ?";
         try {
             int rowsAffected = jdbcTemplate.update(sql,
-                    data.getName(), null, null, null, data.getEdited(), data.isActive(), id);
+                    data.getName(), data.getAddress(), data.getEmail(), data.getTelephoneNumber(), data.getEdited(), data.isActive(), id);
+            //
             return rowsAffected == 1;
         } catch (DataAccessException e) {
             return false;

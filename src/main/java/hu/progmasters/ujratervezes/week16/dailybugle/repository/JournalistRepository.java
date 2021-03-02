@@ -36,9 +36,8 @@ public class JournalistRepository {
     public Journalist findJournalist(int id) {
         try {
             String sql = "SELECT * FROM journalist WHERE id = ?";
-            return jdbcTemplate.queryForObject(sql, new Object[]{id},((resultSet, rowNumber) -> {
+            return jdbcTemplate.queryForObject(sql, new Object[]{id}, ((resultSet, rowNumber) -> {
                 Journalist journalist = new Journalist();
-                journalist.setId(resultSet.getInt("id"));
                 journalist.setName(resultSet.getString("name"));
                 journalist.setAddress(resultSet.getString("address"));
                 journalist.setEmail(resultSet.getString("email"));
@@ -56,7 +55,7 @@ public class JournalistRepository {
         try {
             int rowsAffected = jdbcTemplate.update(sql, data.getName(), data.getAddress(), data.getEmail(), data.getTelephoneNumber(), data.getCreated(), data.isActive());
             //Létrehozás+ utolsó módosítás
-            return true;
+            return rowsAffected == 1; //??????????
         } catch (DataAccessException e) {
             return false;
         }
@@ -79,7 +78,7 @@ public class JournalistRepository {
         try {
             int rowsAffected = jdbcTemplate.update(sql,
                     data.getName(), data.getAddress(), data.getEmail(), data.getTelephoneNumber(), data.getEdited(), data.isActive(), id);
-            //
+            //nullok
             return rowsAffected == 1;
         } catch (DataAccessException e) {
             return false;

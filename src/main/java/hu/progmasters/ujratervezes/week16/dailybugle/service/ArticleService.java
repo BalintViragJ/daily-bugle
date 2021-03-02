@@ -39,4 +39,8 @@ public class ArticleService {
     public boolean modifyArticle(int id, Article article){
         return articleRepository.modifyArticle(id, article);
     }
+
+    public boolean uploader(String path){
+        return articleRepository.uploader(path);
+    }
 }

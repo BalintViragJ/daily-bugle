@@ -1,6 +1,7 @@
 package hu.progmasters.ujratervezes.week16.dailybugle.repository;
 
 
+import com.mysql.cj.protocol.Resultset;
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Article;
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Journalist;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.ArticleCreateData;
@@ -11,6 +12,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 
+import java.io.*;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Repository
@@ -54,7 +60,7 @@ public class ArticleRepository {
             articleLister.setId(article.getId());
             articleLister.setSynopsis(article.getSynopsis());
             articleLister.setTitle(article.getTitle());
-            if(article.isActive()){
+            if (article.isActive()) {
                 return articleLister;
             }
             return null;
@@ -107,27 +113,27 @@ public class ArticleRepository {
 
     }
 
-    public boolean deleteArticle(int id){
+    public boolean deleteArticle(int id) {
         boolean flag = false;
 
         String delete = "UPDATE article SET edited = now(), active = FALSE WHERE id = ?;";
         int success = jdbcTemplate.update(delete, id);
 
-        if(success > 0){
+        if (success > 0) {
             flag = true;
         }
 
         return flag;
     }
 
-    public boolean modifyArticle(int id, Article article){
+    public boolean modifyArticle(int id, Article article) {
         boolean flag = false;
         int updateSuccess = 0;
         String update = "UPDATE article SET ";
-        if(article.getTitle() != null){
+        if (article.getTitle() != null) {
             update += "title = ?, edited = now() WHERE id=?;";
             updateSuccess = jdbcTemplate.update(update, article.getTitle(), id);
-        } else if (article.getSynopsis() != null){
+        } else if (article.getSynopsis() != null) {
             update += "synopsis = ?, edited = now() WHERE id=?;";
             updateSuccess = jdbcTemplate.update(update, article.getSynopsis(), id);
         } else if (article.getText() != null) {
@@ -135,11 +141,60 @@ public class ArticleRepository {
             updateSuccess = jdbcTemplate.update(update, article.getText(), id);
         }
 
-        if (updateSuccess > 0){
+        if (updateSuccess > 0) {
             flag = true;
         }
         return flag;
 
+    }
+
+    public boolean uploader(String path) {
+        boolean flag = false;
+
+
+        int journalistId = 0;
+        String title = "";
+        String synopsis = "";
+        String text = "";
+
+        //Format the input path
+        path = path.substring(path.indexOf(":") + 3, path.lastIndexOf("\""));
+        System.out.println(path);
+
+
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String line ="";
+            while ((line = reader.readLine()) != null) {
+                journalistId = Integer.parseInt(line);
+                title = reader.readLine();
+                synopsis = reader.readLine();
+                while ((line = reader.readLine()) != null) {
+                    text += line + " ";
+                }
+
+            }
+            flag = true;
+           System.out.println(journalistId + " " + title + ", " + synopsis + ", " + text);
+
+        } catch (IOException ex) {
+            flag = false;
+
+        }
+        String save = "INSERT INTO article (journalist_id, title, synopsis, text, created, edited, active) " +
+                "VALUES (?,?,?,?, now(), now(), TRUE);";
+        int saveArticle = 0;
+        try {
+            saveArticle = jdbcTemplate.update(save, journalistId, title, synopsis, text);
+        } catch (DataAccessException e){
+            flag = false;
+        }
+        if(saveArticle > 0){
+            flag = true;
+        }
+
+
+        return flag;
     }
 
 

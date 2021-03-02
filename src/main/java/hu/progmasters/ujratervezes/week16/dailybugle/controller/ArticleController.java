@@ -70,4 +70,17 @@ public class ArticleController {
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping("/upload")
+    public ResponseEntity<Void> uploadArticle(@RequestBody String path){
+        boolean success = articleService.uploader(path);
+        if(success){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+
+    }
 }
+
+

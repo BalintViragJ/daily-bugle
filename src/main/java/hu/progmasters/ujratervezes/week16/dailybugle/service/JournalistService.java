@@ -46,8 +46,8 @@ public class JournalistService {
         return false;
     }
 
-    public boolean deleteJournalist(int id) {
-        boolean deleteSuccessful = journalistRepository.deleteJournalist(id);
+    public boolean deleteJournalist(int id, JournalistCreateData data) {
+        boolean deleteSuccessful = journalistRepository.deleteJournalist(id, data);
 
 
         return false;

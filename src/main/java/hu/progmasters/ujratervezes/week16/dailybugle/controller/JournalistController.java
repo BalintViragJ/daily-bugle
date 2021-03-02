@@ -69,8 +69,8 @@ public class JournalistController {
    }
 
    @DeleteMapping("/{id")
-   public ResponseEntity<Void> deleteJournalist(@PathVariable int id){
-        boolean deleteSuccessful = journalistService.deleteJournalist(id);
+   public ResponseEntity<Void> deleteJournalist(@PathVariable int id, @RequestBody JournalistCreateData data){
+        boolean deleteSuccessful = journalistService.deleteJournalist(id,data);
 
         if(deleteSuccessful){
             return new ResponseEntity<>(HttpStatus.OK);

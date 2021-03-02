@@ -34,7 +34,7 @@ public class CategoryTypeService {
     }
 
     public boolean saveCategory(String name) {
-        if (categoryTypeRepository.getCategoryByName(name) != null) {
+        if (categoryTypeRepository.getCategoryByName(name) == null) {
             boolean saveSuccessful = categoryTypeRepository.saveCategory(name);
             return saveSuccessful;
         } else {

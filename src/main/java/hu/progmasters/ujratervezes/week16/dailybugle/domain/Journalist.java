@@ -7,12 +7,16 @@ public class Journalist {
     private String address;
     private String email;
     private int telephoneNumber;
-    private String birthplace;
 
-
+    public Journalist() {
+    }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -47,11 +51,5 @@ public class Journalist {
         this.telephoneNumber = telephoneNumber;
     }
 
-    public String getBirthplace() {
-        return birthplace;
-    }
 
-    public void setBirthplace(String birthplace) {
-        this.birthplace = birthplace;
-    }
 }

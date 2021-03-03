@@ -18,11 +18,11 @@ import java.util.List;
 public class JournalistService {
 
     private JournalistRepository journalistRepository;
+
     private TelephonesOfJournalist telephonesOfJournalist;
 
     @Autowired
-    public JournalistService(JournalistRepository journalistRepository,
-                             TelephonesOfJournalist telephonesOfJournalist) {
+    public JournalistService(JournalistRepository journalistRepository, TelephonesOfJournalist telephonesOfJournalist) {
         this.journalistRepository = journalistRepository;
         this.telephonesOfJournalist = telephonesOfJournalist;
     }

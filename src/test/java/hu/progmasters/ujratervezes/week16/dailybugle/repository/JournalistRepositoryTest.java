@@ -1,6 +1,7 @@
 package hu.progmasters.ujratervezes.week16.dailybugle.repository;
 
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Journalist;
+import hu.progmasters.ujratervezes.week16.dailybugle.dto.JournalistProfile;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -39,8 +40,8 @@ public class JournalistRepositoryTest {
     @Test
     public void testFindJournalistNoJournalistExistsReturnsNull(){
 
-        Journalist journalist = journalistRepository.findJournalist(1);
-        Assertions.assertNull(journalist);
+        JournalistProfile journalistProfile = journalistRepository.findJournalist(1);
+        Assertions.assertNull(journalistProfile);
     }
 
 }

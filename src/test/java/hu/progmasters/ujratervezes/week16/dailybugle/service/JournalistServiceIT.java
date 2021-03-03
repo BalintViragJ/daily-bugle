@@ -1,6 +1,7 @@
 package hu.progmasters.ujratervezes.week16.dailybugle.service;
 
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Journalist;
+import hu.progmasters.ujratervezes.week16.dailybugle.dto.JournalistProfile;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,8 @@ public class JournalistServiceIT {
 
     @Test
     public void test(){
-        Journalist journalist = journalistService.findJournalist(1);
-        Assertions.assertNull(journalist);
+        JournalistProfile journalistProfile = journalistService.findJournalist(1);
+        Assertions.assertNull(journalistProfile);
     }
 
 }

@@ -34,6 +34,9 @@ public class JournalistService {
         return journalistRepository.findJournalist(id);
     }
 
+    public void saveTelephoneNumbers() {
+    }
+
     public boolean createJournalist(JournalistCreateData data) {
         boolean saveSuccessful = journalistRepository.createJournalist(data);
 

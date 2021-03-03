@@ -60,7 +60,7 @@ public class JournalistRepository {
                 journalistProfile.setJournalistProfile(journalistCreateData);
 
                 List<ArticleLister> articleListersList = new ArrayList<>();
-                articleListersList.add(articleLister);
+
 
                 journalistProfile.setArticleListOfJournalist(articleListersList);
 
@@ -110,5 +110,17 @@ public class JournalistRepository {
         } catch (DataAccessException e) {
             return false;
         }
+    }
+
+    public List<JournalistCreateData> listTelephoneNumbers() {
+        String sql = "SELECT name, telephone_number FROM journalist";
+
+        return jdbcTemplate.query(sql, ((resultSet, i) -> {
+            JournalistCreateData journalistCreateData = new JournalistCreateData();
+            journalistCreateData.setName(resultSet.getString("name"));
+            journalistCreateData.setTelephoneNumber(resultSet.getString("telephone_number"));
+
+            return journalistCreateData;
+        }));
     }
 }

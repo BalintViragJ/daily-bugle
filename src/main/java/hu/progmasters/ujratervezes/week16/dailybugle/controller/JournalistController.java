@@ -43,6 +43,12 @@ public class JournalistController {
         }
     }
 
+    @GetMapping("/telephone")
+    public ResponseEntity<Void> saveTelephoneNumbers(){
+        journalistService.saveTelephoneNumbers();
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
     @PostMapping
     public ResponseEntity<Void> saveJournalist(@RequestBody JournalistCreateData data) {
         boolean saveSuccessful = journalistService.createJournalist(data);

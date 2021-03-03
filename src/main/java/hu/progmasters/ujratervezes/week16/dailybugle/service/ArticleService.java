@@ -3,6 +3,7 @@ package hu.progmasters.ujratervezes.week16.dailybugle.service;
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Article;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.ArticleCreateData;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.ArticleLister;
+import hu.progmasters.ujratervezes.week16.dailybugle.dto.RatingLister;
 import hu.progmasters.ujratervezes.week16.dailybugle.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,5 +47,16 @@ public class ArticleService {
 
     public List<ArticleLister> getFresh(){
         return articleRepository.getFresh();
+    }
+
+    public List<ArticleLister> getTopTen(){
+        List <RatingLister> ratingListers = articleRepository.getTopTen();
+        return articleRepository.listTopTen(ratingListers);
+
+    }
+
+    public List<ArticleLister> getBestOfFresh(){
+        List<RatingLister> ratingListers = articleRepository.getBestOfTen();
+        return articleRepository.listBestOfTen(ratingListers);
     }
 }

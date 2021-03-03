@@ -91,14 +91,14 @@ public class ArticleController {
 
     //List 10 articles with best reviews
     @GetMapping("/bestof")
-    public ResponseEntity<Void> getTheBestTen(){
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<List<ArticleLister>> getTopTen(){
+        return new ResponseEntity<>(articleService.getTopTen(), HttpStatus.OK);
     }
 
     //List 10 articles with best reviews, not older than 3 days
     @GetMapping("/bestoffresh")
-    public ResponseEntity<Void> getBestOfFresh() {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<List<ArticleLister>> getBestOfFresh() {
+        return new ResponseEntity<>(articleService.getBestOfFresh(), HttpStatus.OK);
     }
 }
 

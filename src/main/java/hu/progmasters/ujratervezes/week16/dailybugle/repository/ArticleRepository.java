@@ -1,11 +1,11 @@
 package hu.progmasters.ujratervezes.week16.dailybugle.repository;
 
 
-
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Article;
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Journalist;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.ArticleCreateData;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.ArticleLister;
+import hu.progmasters.ujratervezes.week16.dailybugle.dto.RatingLister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -149,7 +150,6 @@ public class ArticleRepository {
         boolean flag = false;
 
 
-
         int journalistId = 0;
         String title = "";
         String synopsis = "";
@@ -160,9 +160,8 @@ public class ArticleRepository {
         System.out.println(path);
 
 
-
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            String line ="";
+            String line = "";
             while ((line = reader.readLine()) != null) {
                 journalistId = Integer.parseInt(line);
                 title = reader.readLine();
@@ -183,10 +182,10 @@ public class ArticleRepository {
         int saveArticle = 0;
         try {
             saveArticle = jdbcTemplate.update(save, journalistId, title, synopsis, text);
-        } catch (DataAccessException e){
+        } catch (DataAccessException e) {
             flag = false;
         }
-        if(saveArticle > 0){
+        if (saveArticle > 0) {
             flag = true;
         }
 
@@ -194,7 +193,7 @@ public class ArticleRepository {
         return flag;
     }
 
-    public List<ArticleLister> getFresh(){
+    public List<ArticleLister> getFresh() {
         String sql = "SELECT a.id, a.title, a.synopsis, a.edited, j.name " +
                 "FROM article a JOIN journalist " +
                 "j ON a.journalist_id = j.id ORDER BY a.edited LIMIT 10 ";
@@ -210,7 +209,86 @@ public class ArticleRepository {
 
     }
 
+    public List<RatingLister> getTopTen() {
+        String query = "SELECT AVG(rating) AS rating, article_id FROM rating " +
+                "GROUP BY article_id ORDER BY rating DESC LIMIT 10;";
 
+        return jdbcTemplate.query(query, ((resultSet, i) -> {
+            RatingLister ratingLister = new RatingLister();
+            ratingLister.setRating(resultSet.getInt("rating"));
+            ratingLister.setArticleId(resultSet.getInt("article_id"));
+            return ratingLister;
+        }));
+
+    }
+
+    public List<RatingLister> getBestOfTen(){
+        String query = "SELECT AVG(rating) AS rating, article_id, a.edited, " +
+                "TIMESTAMPDIFF(HOUR, a.edited, now()) AS time " +
+                "FROM rating JOIN article a ON article_id = a.id " +
+                "GROUP BY article_id ORDER BY rating DESC LIMIT 10;";
+
+        return jdbcTemplate.query(query, ((resultSet, i) -> {
+            RatingLister ratingLister = new RatingLister();
+            ratingLister.setRating(resultSet.getInt("rating"));
+            ratingLister.setArticleId(resultSet.getInt("article_id"));
+            ratingLister.setTime(resultSet.getInt("time"));
+            return ratingLister;
+        }));
+
+
+    }
+
+    public List<ArticleLister> listTopTen(List<RatingLister> ratingListers){
+        String sql = "SELECT a.id, a.title, a.synopsis, a.edited, j.name " +
+                "FROM article a JOIN journalist " +
+                "j ON a.journalist_id = j.id WHERE a.id = ?;";
+        List<ArticleLister> articleListers = new ArrayList<>();
+
+
+        for (RatingLister ratingLister : ratingListers) {
+
+            articleListers.add(jdbcTemplate.queryForObject(sql, new Object[]{ratingLister.getArticleId()}, ((resultSet, i) -> {
+                ArticleLister articleLister = new ArticleLister();
+                articleLister.setId(resultSet.getInt("id"));
+                articleLister.setJournalistName(resultSet.getString("name"));
+                articleLister.setTitle(resultSet.getString("title"));
+                articleLister.setSynopsis(resultSet.getString("synopsis"));
+                return articleLister;
+            })));
+
+        }
+
+        return articleListers;
+
+
+
+    }
+
+    public List<ArticleLister> listBestOfTen(List<RatingLister> ratingListers){
+        String sql = "SELECT a.id, a.title, a.synopsis, a.edited, j.name " +
+                "FROM article a JOIN journalist " +
+                "j ON a.journalist_id = j.id WHERE a.id = ?;";
+        List<ArticleLister> articleListers = new ArrayList<>();
+
+
+        for (RatingLister ratingLister : ratingListers) {
+
+            if(ratingLister.getTime() < 72) {
+                articleListers.add(jdbcTemplate.queryForObject(sql, new Object[]{ratingLister.getArticleId()}, ((resultSet, i) -> {
+                    ArticleLister articleLister = new ArticleLister();
+                    articleLister.setId(resultSet.getInt("id"));
+                    articleLister.setJournalistName(resultSet.getString("name"));
+                    articleLister.setTitle(resultSet.getString("title"));
+                    articleLister.setSynopsis(resultSet.getString("synopsis"));
+                    return articleLister;
+                })));
+            }
+
+        }
+        return articleListers;
+
+    }
 
 
 }

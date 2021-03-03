@@ -41,6 +41,9 @@ public class JournalistRepository {
             String sql = "SELECT j.id, j.name, j.address, j.email, j.telephone_number, a.id AS article_id, a.title, a.synopsis " +
                         "FROM journalist j JOIN article a ON j.id = a.journalist_id WHERE j.id = ?";
             return jdbcTemplate.queryForObject(sql, new Object[]{id}, ((resultSet, rowNumber) -> {
+
+                //
+
                 JournalistCreateData journalistCreateData = new JournalistCreateData();
                 JournalistProfile journalistProfile = new JournalistProfile();
                 ArticleLister articleLister = new ArticleLister();

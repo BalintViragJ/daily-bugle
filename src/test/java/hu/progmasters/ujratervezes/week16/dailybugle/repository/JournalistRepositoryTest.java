@@ -36,11 +36,11 @@ public class JournalistRepositoryTest {
     @AfterEach
     public void destruct() {jdbcTemplate.execute("DROP TABLE IF EXISTS JOURNALIST");}
 
-//    @Test
-//    public void testFindJournalistNoJournalistExistsReturnsNull(){
-//
-//        Journalist journalist = journalistRepository.findJournalist(1);
-//        Assertions.assertNull(journalist);
-//    }
+    @Test
+    public void testFindJournalistNoJournalistExistsReturnsNull(){
+
+        Journalist journalist = journalistRepository.findJournalist(1);
+        Assertions.assertNull(journalist);
+    }
 
 }

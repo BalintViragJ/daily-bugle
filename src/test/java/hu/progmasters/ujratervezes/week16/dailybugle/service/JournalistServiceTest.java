@@ -14,8 +14,6 @@ public class JournalistServiceTest {
     @Mock
     private JournalistRepository journalistRepositoryMock;
 
-    @BeforeEach
-    public void init(){journalistService = new JournalistService(journalistRepositoryMock);}
 
 
 }

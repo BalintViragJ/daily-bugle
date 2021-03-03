@@ -26,7 +26,7 @@ public class TelephonesOfJournalist {
     }
 
     public void writePhoneNumber(){
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("files/phonenumbers/phonenumbers.csv"))) {
             List<JournalistCreateData> journalistPhoneNumbers = journalistRepository.listTelephoneNumbers();
 
             for (JournalistCreateData journalistPhoneNumber : journalistPhoneNumbers) {

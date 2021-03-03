@@ -5,6 +5,7 @@ import hu.progmasters.ujratervezes.week16.dailybugle.domain.Journalist;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.JournalistCreateData;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.JournalistProfile;
 import hu.progmasters.ujratervezes.week16.dailybugle.repository.JournalistRepository;
+import hu.progmasters.ujratervezes.week16.dailybugle.telephones.TelephonesOfJournalist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +18,13 @@ import java.util.List;
 public class JournalistService {
 
     private JournalistRepository journalistRepository;
+    private TelephonesOfJournalist telephonesOfJournalist;
 
     @Autowired
-    public JournalistService(JournalistRepository journalistRepository) {
+    public JournalistService(JournalistRepository journalistRepository,
+                             TelephonesOfJournalist telephonesOfJournalist) {
         this.journalistRepository = journalistRepository;
+        this.telephonesOfJournalist = telephonesOfJournalist;
     }
 
     public List<Journalist> getJournalists() {
@@ -35,6 +39,7 @@ public class JournalistService {
     }
 
     public void saveTelephoneNumbers() {
+        telephonesOfJournalist.writePhoneNumber();
     }
 
     public boolean createJournalist(JournalistCreateData data) {

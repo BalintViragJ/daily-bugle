@@ -42,7 +42,7 @@ class CategoryTypeRepositoryTest {
     }
 
     @Test
-    void getCategories() {
+    void test_getCategories_3categories() {
         createDummyDataCategories();
 
         CategoryType history = new CategoryType();
@@ -50,28 +50,71 @@ class CategoryTypeRepositoryTest {
         history.setName("történelem");
 
         CategoryType music = new CategoryType();
-        history.setId(1);
-        history.setName("zene");
+        music.setId(2);
+        music.setName("zene");
 
         CategoryType literature = new CategoryType();
-        history.setId(1);
-        history.setName("irodalom");
+        literature.setId(3);
+        literature.setName("irodalom");
 
         List<CategoryType> expected = List.of(history, music, literature);
 
         assertEquals(expected, categoryTypeRepository.getCategories());
+    }
+
+    @Test
+    void test_getCategoryById_notExists_null() {
+        createDummyDataCategories();
+        assertNull(categoryTypeRepository.getCategoryById(5));
+    }
+
+    @Test
+    void test_getCategoryById_Exists() {
+        createDummyDataCategories();
+
+        CategoryType expected = new CategoryType();
+        expected.setId(2);
+        expected.setName("zene");
+
+        assertEquals(expected, categoryTypeRepository.getCategoryById(2));
+    }
+
+    @Test
+    void test_saveCategory_successful() {
+        createDummyDataCategories();
+
+        boolean successful = categoryTypeRepository.saveCategory("bulvár");
+
+        CategoryType expected = new CategoryType();
+        expected.setId(4);
+        expected.setName("bulvár");
+
+        CategoryType actual = jdbcTemplate.queryForObject("SELECT * FROM category_type WHERE id = 4;", ((resultSet, i) -> {
+            CategoryType categoryType = new CategoryType();
+            categoryType.setId(resultSet.getInt("id"));
+            categoryType.setName(resultSet.getString("name"));
+            return categoryType;
+        }));
+
+        assertEquals(expected, actual);
+        assertTrue(successful);
 
     }
 
     @Test
-    void getCategoryById() {
+    void test_getCategoryByName_notExists_null() {
+        createDummyDataCategories();
+        assertNull(categoryTypeRepository.getCategoryByName("pletyka"));
     }
 
     @Test
-    void saveCategory() {
-    }
+    void test_getCategoryByName_Exists() {
+        createDummyDataCategories();
 
-    @Test
-    void getCategoryByName() {
+        CategoryType expected = new CategoryType();
+        expected.setId(2);
+        expected.setName("zene");
+
+        assertEquals(expected, categoryTypeRepository.getCategoryByName("zene"));
     }
 }

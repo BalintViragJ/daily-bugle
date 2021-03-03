@@ -7,12 +7,12 @@ public class Reader {
     private int id;
     private String email;
     private String username;
-    private LocalDateTime created;
-    private LocalDateTime edited;
+    private String  created;
+    private String edited;
     private boolean active;
 
-  //  public Customer(){
-  //  }
+  public Reader(){
+    }
 
     public int getId() {
         return id;
@@ -30,19 +30,19 @@ public class Reader {
         this.email = email;
     }
 
-    public LocalDateTime getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 
-    public LocalDateTime getEdited() {
+    public String getEdited() {
         return edited;
     }
 
-    public void setEdited(LocalDateTime edited) {
+    public void setEdited(String edited) {
         this.edited = edited;
     }
 

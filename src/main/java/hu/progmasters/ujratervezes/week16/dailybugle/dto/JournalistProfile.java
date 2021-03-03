@@ -4,18 +4,18 @@ import java.util.List;
 
 public class JournalistProfile {
 
-    private JournalistCreateData journalistProfile;
+    private JournalistCreateData journalistData;
     private List<ArticleLister> articleListOfJournalist;
 
     public JournalistProfile() {
     }
 
-    public JournalistCreateData getJournalistProfile() {
-        return journalistProfile;
+    public JournalistCreateData getJournalistData() {
+        return journalistData;
     }
 
-    public void setJournalistProfile(JournalistCreateData journalistProfile) {
-        this.journalistProfile = journalistProfile;
+    public void setJournalistData(JournalistCreateData journalistData) {
+        this.journalistData = journalistData;
     }
 
     public List<ArticleLister> getArticleListOfJournalist() {

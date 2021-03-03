@@ -33,7 +33,7 @@ public class JournalistService {
         return journalists;
     }
 
-    public JournalistProfile findJournalist(int id) {
+    public List<JournalistProfile> findJournalist(int id) {
 
         return journalistRepository.findJournalist(id);
     }

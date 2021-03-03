@@ -33,9 +33,9 @@ public class JournalistController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<JournalistProfile> getJournalist(@PathVariable int id) {
-        JournalistProfile journalistProfile = journalistService.findJournalist(id);
+    public ResponseEntity<List<JournalistProfile>> getJournalist(@PathVariable int id) {
 
+        List<JournalistProfile> journalistProfile = journalistService.findJournalist(id);
         if (journalistProfile != null) {
             return new ResponseEntity<>(journalistProfile, HttpStatus.OK);
         } else {

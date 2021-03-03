@@ -19,10 +19,6 @@ public class JournalistServiceIT {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @Test
-    public void test(){
-        JournalistProfile journalistProfile = journalistService.findJournalist(1);
-        Assertions.assertNull(journalistProfile);
-    }
+
 
 }

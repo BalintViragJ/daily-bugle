@@ -1,5 +1,7 @@
 package hu.progmasters.ujratervezes.week16.dailybugle.domain;
 
+import java.util.Objects;
+
 public class CategoryType {
     private int id;
     private String name;
@@ -21,5 +23,19 @@ public class CategoryType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CategoryType that = (CategoryType) o;
+        return id == that.id &&
+                Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

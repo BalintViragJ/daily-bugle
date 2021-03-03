@@ -7,9 +7,12 @@ public class Journalist {
     private String address;
     private String email;
     private String telephoneNumber;
+    private boolean active;
+    //Times kell?
 
     public Journalist() {
     }
+    //Paraméteres konstruktor kell
 
     public int getId() {
         return id;
@@ -49,5 +52,13 @@ public class Journalist {
 
     public void setTelephoneNumber(String telephoneNumber) {
         this.telephoneNumber = telephoneNumber;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

@@ -25,31 +25,31 @@ public class JournalistService {
     public List<Journalist> getJournalists() {
         List<Journalist> journalists = journalistRepository.getJournalists();
 
-        return null;
+        return journalists;
     }
 
     public Journalist findJournalist(int id) {
         Journalist journalist = journalistRepository.findJournalist(id);
 
-        return null;
+        return journalist;
     }
 
     public boolean createJournalist(JournalistCreateData data) {
         boolean saveSuccessful = journalistRepository.createJournalist(data);
 
-        return false;
+        return saveSuccessful;
     }
 
     public boolean updateJournalist(int id, JournalistCreateData data) {
         boolean updateSuccessful = journalistRepository.updateJournalist(id, data);
 
-        return false;
+        return updateSuccessful;
     }
 
-    public boolean deleteJournalist(int id, JournalistCreateData data) {
-        boolean deleteSuccessful = journalistRepository.deleteJournalist(id, data);
+    public boolean deleteJournalist(int id) {
+        boolean deleteSuccessful = journalistRepository.deleteJournalist(id);
 
 
-        return false;
+        return deleteSuccessful;
     }
 }

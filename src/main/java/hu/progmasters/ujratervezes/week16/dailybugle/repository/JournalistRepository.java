@@ -42,6 +42,7 @@ public class JournalistRepository {
                 journalist.setAddress(resultSet.getString("address"));
                 journalist.setEmail(resultSet.getString("email"));
                 journalist.setTelephoneNumber(resultSet.getString("telephone_number"));
+                //TODO általuk írt cikkek
                 return journalist;
             }));
         } catch (EmptyResultDataAccessException e) {
@@ -51,11 +52,10 @@ public class JournalistRepository {
 
     public boolean createJournalist(JournalistCreateData data) {
 
-        String sql = "INSERT INTO journalist (name, address, email, telephone_number, created, active) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO journalist (name, address, email, telephone_number, created, active) VALUES (?, ?, ?, ?, now(), TRUE)";
         try {
-            int rowsAffected = jdbcTemplate.update(sql, data.getName(), data.getAddress(), data.getEmail(), data.getTelephoneNumber(), data.getCreated(), data.isActive());
-            //Létrehozás+ utolsó módosítás
-            return rowsAffected == 1; //??????????
+            int rowsAffected = jdbcTemplate.update(sql, data.getName(), data.getAddress(), data.getEmail(), data.getTelephoneNumber());
+            return rowsAffected == 1;
         } catch (DataAccessException e) {
             return false;
         }
@@ -63,22 +63,20 @@ public class JournalistRepository {
 
     public boolean updateJournalist(int id, JournalistCreateData data) {
         String sql;
-        sql = "UPDATE journalist SET name = ?, address = ?, email = ?, telephone_number = ?, edited = ?, active = ?  WHERE id = ?";
+        sql = "UPDATE journalist SET name = ?, address = ?, email = ?, telephone_number = ?, edited = now() WHERE id = ?";
         try {
             int rowsAffected = jdbcTemplate.update(sql,
-                    data.getName(), data.getAddress(), data.getEmail(), data.getTelephoneNumber(), data.getEdited(), data.isActive(), id);
+                    data.getName(), data.getAddress(), data.getEmail(), data.getTelephoneNumber(), data.getEdited(), id);
             return rowsAffected == 1;
         } catch (DataAccessException e) {
             return false;
         }
     }
 
-    public boolean deleteJournalist(int id, JournalistCreateData data) {
-        String sql = "UPDATE journalist SET name = ?, address = ?, email = ?, telephone_number = ?, edited = ?, active = ?  WHERE id = ?";
+    public boolean deleteJournalist(int id) {
+        String sql = "UPDATE journalist SET name = 'Névtelen szerző', address = NULL, email = NULL, telephone_number = NULL, edited = now(), active = FALSE  WHERE id = ?";
         try {
-            int rowsAffected = jdbcTemplate.update(sql,
-                    data.getName(), data.getAddress(), data.getEmail(), data.getTelephoneNumber(), data.getEdited(), data.isActive(), id);
-            //nullok
+            int rowsAffected = jdbcTemplate.update(sql, id);
             return rowsAffected == 1;
         } catch (DataAccessException e) {
             return false;

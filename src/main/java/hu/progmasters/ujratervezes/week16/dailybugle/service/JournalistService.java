@@ -3,6 +3,7 @@ package hu.progmasters.ujratervezes.week16.dailybugle.service;
 
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Journalist;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.JournalistCreateData;
+import hu.progmasters.ujratervezes.week16.dailybugle.dto.JournalistProfile;
 import hu.progmasters.ujratervezes.week16.dailybugle.repository.JournalistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,10 +29,9 @@ public class JournalistService {
         return journalists;
     }
 
-    public Journalist findJournalist(int id) {
-        Journalist journalist = journalistRepository.findJournalist(id);
+    public JournalistProfile findJournalist(int id) {
 
-        return journalist;
+        return journalistRepository.findJournalist(id);
     }
 
     public boolean createJournalist(JournalistCreateData data) {

@@ -1,5 +1,8 @@
 package hu.progmasters.ujratervezes.week16.dailybugle.domain;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 public class Journalist {
 
     private int id;
@@ -7,8 +10,10 @@ public class Journalist {
     private String address;
     private String email;
     private String telephoneNumber;
+    private Timestamp created;
+    private Timestamp edited;
     private boolean active;
-    //Times kell?
+
 
     public Journalist() {
     }

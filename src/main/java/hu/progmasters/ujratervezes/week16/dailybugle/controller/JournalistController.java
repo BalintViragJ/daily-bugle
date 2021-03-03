@@ -3,6 +3,7 @@ package hu.progmasters.ujratervezes.week16.dailybugle.controller;
 
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Journalist;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.JournalistCreateData;
+import hu.progmasters.ujratervezes.week16.dailybugle.dto.JournalistProfile;
 import hu.progmasters.ujratervezes.week16.dailybugle.service.JournalistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,17 +25,18 @@ public class JournalistController {
 
     @GetMapping
     public ResponseEntity<List<Journalist>> getJournalists() {
+
         List<Journalist> journalists = journalistService.getJournalists();
 
         return new ResponseEntity<>(journalists, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Journalist> getJournalist(@PathVariable int id) {
-        Journalist journalist = journalistService.findJournalist(id);
+    public ResponseEntity<JournalistProfile> getJournalist(@PathVariable int id) {
+        JournalistProfile journalistProfile = new JournalistProfile();
 
-        if (journalist != null) {
-            return new ResponseEntity<>(journalist, HttpStatus.OK);
+        if (journalistProfile != null) {
+            return new ResponseEntity<>(journalistProfile, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -50,7 +52,6 @@ public class JournalistController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateJournalist(@PathVariable int id, @RequestBody JournalistCreateData data) {
@@ -72,6 +73,6 @@ public class JournalistController {
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
     }
+
 }

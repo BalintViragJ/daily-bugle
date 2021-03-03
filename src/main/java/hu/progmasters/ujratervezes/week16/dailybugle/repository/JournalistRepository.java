@@ -37,8 +37,6 @@ public class JournalistRepository {
     }
 
     public List<JournalistProfile> findJournalist(int id) {
-        String queryForArticles = "SELECT a.id, a.journalist_id, a.title, a.synopsis, j.name FROM article a JOIN journalist j ON a.journalist_id = j.id WHERE a.journalist_id = ?;";
-
 
         try {
             String sql = "SELECT j.id, j.name, j.address, j.email, j.telephone_number, a.id AS article_id, a.title, a.synopsis " +

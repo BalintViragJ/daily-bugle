@@ -194,5 +194,23 @@ public class ArticleRepository {
         return flag;
     }
 
+    public List<ArticleLister> getFresh(){
+        String sql = "SELECT a.id, a.title, a.synopsis, a.edited, j.name " +
+                "FROM article a JOIN journalist " +
+                "j ON a.journalist_id = j.id ORDER BY a.edited LIMIT 10 ";
+
+        return jdbcTemplate.query(sql, ((resultSet, i) -> {
+            ArticleLister articleLister = new ArticleLister();
+            articleLister.setId(resultSet.getInt("id"));
+            articleLister.setJournalistName(resultSet.getString("name"));
+            articleLister.setTitle(resultSet.getString("title"));
+            articleLister.setSynopsis(resultSet.getString("synopsis"));
+            return articleLister;
+        }));
+
+    }
+
+
+
 
 }

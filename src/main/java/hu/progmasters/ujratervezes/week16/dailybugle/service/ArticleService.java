@@ -43,4 +43,8 @@ public class ArticleService {
     public boolean uploader(String path){
         return articleRepository.uploader(path);
     }
+
+    public List<ArticleLister> getFresh(){
+        return articleRepository.getFresh();
+    }
 }

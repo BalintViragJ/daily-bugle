@@ -39,21 +39,26 @@ public class JournalistRepository {
     public JournalistProfile findJournalist(int id) {
         try {
             String sql = "SELECT j.id, j.name, j.address, j.email, j.telephone_number, a.id AS article_id, a.title, a.synopsis " +
-                        "FROM journalist j JOIN article a ON j.id = a.journalist_id WHERE id = ?";
+                        "FROM journalist j JOIN article a ON j.id = a.journalist_id WHERE j.id = ?";
             return jdbcTemplate.queryForObject(sql, new Object[]{id}, ((resultSet, rowNumber) -> {
                 JournalistCreateData journalistCreateData = new JournalistCreateData();
                 JournalistProfile journalistProfile = new JournalistProfile();
                 ArticleLister articleLister = new ArticleLister();
+
                 journalistCreateData.setName(resultSet.getString("name"));
                 journalistCreateData.setAddress(resultSet.getString("address"));
                 journalistCreateData.setEmail(resultSet.getString("email"));
                 journalistCreateData.setTelephoneNumber(resultSet.getString("telephone_number"));
+
                 articleLister.setId(resultSet.getInt("article_id"));
                 articleLister.setTitle(resultSet.getString("title"));
                 articleLister.setSynopsis(resultSet.getString("synopsis"));
+
                 journalistProfile.setJournalistProfile(journalistCreateData);
+
                 List<ArticleLister> articleListersList = new ArrayList<>();
                 articleListersList.add(articleLister);
+
                 journalistProfile.setArticleListOfJournalist(articleListersList);
 
                 return journalistProfile;
@@ -61,6 +66,13 @@ public class JournalistRepository {
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
+    }
+
+    private List<ArticleLister> listArticles(ArticleLister articleLister){
+        List<ArticleLister> articleListers = new ArrayList<>();
+        articleListers.add(articleLister);
+        return articleListers;
+
     }
 
     public boolean createJournalist(JournalistCreateData data) {

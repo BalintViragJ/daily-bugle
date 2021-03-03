@@ -1,7 +1,7 @@
 package hu.progmasters.ujratervezes.week16.dailybugle.repository;
 
 
-import com.mysql.cj.protocol.Resultset;
+
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Article;
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Journalist;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.ArticleCreateData;
@@ -13,10 +13,7 @@ import org.springframework.stereotype.Repository;
 
 
 import java.io.*;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
 import java.util.List;
 
 @Repository
@@ -152,6 +149,7 @@ public class ArticleRepository {
         boolean flag = false;
 
 
+
         int journalistId = 0;
         String title = "";
         String synopsis = "";
@@ -175,7 +173,6 @@ public class ArticleRepository {
 
             }
             flag = true;
-           System.out.println(journalistId + " " + title + ", " + synopsis + ", " + text);
 
         } catch (IOException ex) {
             flag = false;

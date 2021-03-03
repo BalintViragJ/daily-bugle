@@ -2,6 +2,7 @@ package hu.progmasters.ujratervezes.week16.dailybugle.controller;
 
 
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Journalist;
+import hu.progmasters.ujratervezes.week16.dailybugle.dto.ArticleLister;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.JournalistCreateData;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.JournalistProfile;
 import hu.progmasters.ujratervezes.week16.dailybugle.service.JournalistService;
@@ -33,7 +34,7 @@ public class JournalistController {
 
     @GetMapping("/{id}")
     public ResponseEntity<JournalistProfile> getJournalist(@PathVariable int id) {
-        JournalistProfile journalistProfile = new JournalistProfile();
+        JournalistProfile journalistProfile = journalistService.findJournalist(id);
 
         if (journalistProfile != null) {
             return new ResponseEntity<>(journalistProfile, HttpStatus.OK);

@@ -20,12 +20,12 @@ public class CategoryTypeRepository {
 
     public List<CategoryType> getCategories() {
         String sql = "SELECT * FROM category_type ";
-        return jdbcTemplate.query(sql, (resultSet, rowNumber) -> {
+        return jdbcTemplate.query(sql, ((resultSet, rowNumber) -> {
             CategoryType categoryType = new CategoryType();
             categoryType.setId(resultSet.getInt("id"));
             categoryType.setName(resultSet.getString("name"));
             return categoryType;
-        });
+        }));
     }
 
     public CategoryType findCategoryById(int id) {

@@ -59,6 +59,18 @@ public List<Reader> getReaders(){
 
             return false;}
     }
+
+    public boolean updateReader(int id, ReaderCreateData data) {
+        String sql = "UPDATE reader SET email = ?, name = ?, WHERE id = ?";
+        try {
+            int rowsAffected = jdbcTemplate.update(sql,
+                    data.getEmail(), data.getUsername(), id);
+            return rowsAffected == 1;
+        } catch (DataAccessException e) {
+            return false;
+        }
+    }
+
     public boolean deleteReader(int id) {
         String sql = "DELETE FROM reader WHERE id = ?";
         try {

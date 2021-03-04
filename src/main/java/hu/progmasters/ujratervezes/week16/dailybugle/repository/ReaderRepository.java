@@ -61,10 +61,10 @@ public List<Reader> getReaders(){
     }
 
     public boolean updateReader(int id, ReaderCreateData data) {
-        String sql = "UPDATE reader SET email = ?, name = ?, WHERE id = ?";
+        String sql = "UPDATE reader SET email = ?, name = ?, edited = NOW(); WHERE id = ?";
         try {
             int rowsAffected = jdbcTemplate.update(sql,
-                    data.getEmail(), data.getUsername(), id);
+                    data.getEmail(), data.getUsername(), data.getEdited(), id);
             return rowsAffected == 1;
         } catch (DataAccessException e) {
             return false;

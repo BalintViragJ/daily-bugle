@@ -2,6 +2,7 @@ package hu.progmasters.ujratervezes.week16.dailybugle.service;
 
 
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Journalist;
+import hu.progmasters.ujratervezes.week16.dailybugle.dto.ArticleLister;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.JournalistCreateData;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.JournalistProfile;
 import hu.progmasters.ujratervezes.week16.dailybugle.repository.JournalistRepository;
@@ -33,9 +34,11 @@ public class JournalistService {
         return journalists;
     }
 
-    public List<JournalistProfile> findJournalist(int id) {
+    public JournalistProfile findJournalist(int id) {
+        List<ArticleLister> articleListers = journalistRepository.getArticleOfJournalist(id);
 
-        return journalistRepository.findJournalist(id);
+
+        return journalistRepository.findJournalist(id, articleListers);
     }
 
     public void saveTelephoneNumbers() {

@@ -1,5 +1,6 @@
 package hu.progmasters.ujratervezes.week16.dailybugle.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Journalist;
 
 public class ArticleLister {
@@ -8,6 +9,8 @@ public class ArticleLister {
     private String journalistName;
     private String title;
     private String synopsis;
+    @JsonIgnore
+    private boolean active;
 
     public int getId() {
         return id;
@@ -39,5 +42,13 @@ public class ArticleLister {
 
     public void setSynopsis(String synopsis) {
         this.synopsis = synopsis;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

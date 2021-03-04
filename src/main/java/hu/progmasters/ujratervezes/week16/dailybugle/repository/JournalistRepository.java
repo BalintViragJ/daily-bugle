@@ -36,34 +36,23 @@ public class JournalistRepository {
         });
     }
 
-    public List<JournalistProfile> findJournalist(int id) {
+    public JournalistProfile findJournalist(int id, List<ArticleLister> articleListers) {
 
         try {
-            String sql = "SELECT j.id, j.name, j.address, j.email, j.telephone_number, a.id AS article_id, a.title, a.synopsis " +
-                    "FROM journalist j JOIN article a ON j.id = a.journalist_id WHERE j.id = ?";
-            return jdbcTemplate.query(sql, new Object[]{id}, ((resultSet, rowNumber) -> {
-                //példányosítás
-                JournalistCreateData journalistCreateData = new JournalistCreateData();
-                JournalistProfile journalistProfile = new JournalistProfile();
-                List<ArticleLister> articleListers = new ArrayList<>();
-                ArticleLister articleLister = new ArticleLister();
+            String sql = "SELECT j.id, j.name, j.address, j.email, j.telephone_number " +
+                    "FROM journalist j WHERE j.id = ?";
+            return jdbcTemplate.queryForObject(sql, new Object[]{id}, ((resultSet, rowNumber) -> {
+              JournalistProfile journalistProfile = new JournalistProfile();
+              JournalistCreateData journalistCreateData = new JournalistCreateData();
 
-                //journalist adatainak beállítása
-                journalistCreateData.setName(resultSet.getString("name"));
-                journalistCreateData.setAddress(resultSet.getString("address"));
-                journalistCreateData.setEmail(resultSet.getString("email"));
-                journalistCreateData.setTelephoneNumber(resultSet.getString("telephone_number"));
+              journalistCreateData.setName(resultSet.getString("name"));
+              journalistCreateData.setAddress(resultSet.getString("address"));
+              journalistCreateData.setEmail(resultSet.getString("email"));
+              journalistCreateData.setTelephoneNumber(resultSet.getString("telephone_number"));
 
-                //cikk adatainak beállítása
-                articleLister.setId(resultSet.getInt("article_id"));
-                articleLister.setJournalistName("name");
-                articleLister.setTitle(resultSet.getString("title"));
-                articleLister.setSynopsis(resultSet.getString("synopsis"));
-                articleListers.add(articleLister);
-
-                //journalistProfile adatainak beállítása
-                journalistProfile.setJournalistData(journalistCreateData);
-                journalistProfile.setArticleListOfJournalist(articleListers);
+              journalistProfile.setJournalistData(journalistCreateData);
+              journalistProfile.setArticleListOfJournalist(articleListers);
+              //TODO plusz lépés
 
                 return journalistProfile;
             }));
@@ -117,5 +106,25 @@ public class JournalistRepository {
 
             return journalistCreateData;
         }));
+    }
+
+
+    public List<ArticleLister> getArticleOfJournalist(int id) {
+        String sql = "SELECT a.id, a.journalist_id, a.title, a.synopsis, a.active, j.name FROM article a JOIN journalist j " +
+                        "ON a.journalist_id = j.id WHERE j.id = ?";
+        List<ArticleLister> articleListers = new ArrayList<>();
+
+        articleListers.add(jdbcTemplate.queryForObject(sql, new Object[]{id}, ((resultSet, i) -> {
+            ArticleLister articleLister = new ArticleLister();
+            articleLister.setActive(resultSet.getBoolean("active"));
+            if (articleLister.isActive()) {
+                articleLister.setId((resultSet.getInt("id")));
+                articleLister.setJournalistName(resultSet.getString("name"));
+                articleLister.setTitle(resultSet.getString("title"));
+                articleLister.setSynopsis(resultSet.getString("synopsis"));
+                return articleLister;
+            }return null;
+        })));
+            return articleListers;
     }
 }

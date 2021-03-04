@@ -12,7 +12,10 @@ public class JournalistServiceTest {
     private JournalistService journalistService;
 
     @Mock
-    private JournalistRepository journalistRepositoryMock;
+    private JournalistRepository journalistRepository;
+
+//    @BeforeEach
+//    void init() {JournalistService = new JournalistService(journalistService);}
 
 
 

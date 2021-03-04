@@ -25,7 +25,6 @@ public class JournalistRepositoryTest {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS JOURNALIST (" +
                                     "id INT AUTO_INCREMENT PRIMARY KEY, " +
                                     "name VARCHAR(45), " +
-                                    "name VARCHAR(45), " +
                                     "email VARCHAR(45), " +
                                     "telephone_number(9), "+
                                     "created TIMESAMP, "+

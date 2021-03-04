@@ -27,8 +27,8 @@ public class CategoryTypeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryType> getCategoryById(@PathVariable int id) {
-        CategoryType categoryType = categoryTypeService.getCategoryById(id);
+    public ResponseEntity<CategoryType> findCategoryById(@PathVariable int id) {
+        CategoryType categoryType = categoryTypeService.findCategoryById(id);
         if (categoryType != null) {
             return new ResponseEntity<>(categoryType, HttpStatus.OK);
         } else {
@@ -37,8 +37,8 @@ public class CategoryTypeController {
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<CategoryType> getCategoryByName(@PathVariable String name) {
-        CategoryType categoryType = categoryTypeService.getCategoryByName(name);
+    public ResponseEntity<CategoryType> findCategoryByName(@PathVariable String name) {
+        CategoryType categoryType = categoryTypeService.findCategoryByName(name);
         if (categoryType != null) {
             return new ResponseEntity<>(categoryType, HttpStatus.OK);
         } else {

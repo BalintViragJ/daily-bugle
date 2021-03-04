@@ -28,10 +28,24 @@ public class CategoryTypeRepository {
         });
     }
 
-    public CategoryType getCategoryById(int id) {
+    public CategoryType findCategoryById(int id) {
         try {
             String sql = "SELECT * FROM category_type WHERE id = ? ";
             return jdbcTemplate.queryForObject(sql, new Object[]{id}, ((resultSet, rowNumber) -> {
+                CategoryType categoryType = new CategoryType();
+                categoryType.setId(resultSet.getInt("id"));
+                categoryType.setName(resultSet.getString("name"));
+                return categoryType;
+            }));
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public CategoryType findCategoryByName(String name) {
+        try {
+            String sql = "SELECT * FROM category_type WHERE name = ? ";
+            return jdbcTemplate.queryForObject(sql, new Object[]{name}, ((resultSet, rowNumber) -> {
                 CategoryType categoryType = new CategoryType();
                 categoryType.setId(resultSet.getInt("id"));
                 categoryType.setName(resultSet.getString("name"));
@@ -49,20 +63,6 @@ public class CategoryTypeRepository {
             return rowsAffected == 1;
         } catch (DataAccessException e) {
             return false;
-        }
-    }
-
-    public CategoryType getCategoryByName(String name) {
-        try {
-            String sql = "SELECT * FROM category_type WHERE name = ? ";
-            return jdbcTemplate.queryForObject(sql, new Object[]{name}, ((resultSet, rowNumber) -> {
-                CategoryType categoryType = new CategoryType();
-                categoryType.setId(resultSet.getInt("id"));
-                categoryType.setName(resultSet.getString("name"));
-                return categoryType;
-            }));
-        } catch (EmptyResultDataAccessException e) {
-            return null;
         }
     }
 }

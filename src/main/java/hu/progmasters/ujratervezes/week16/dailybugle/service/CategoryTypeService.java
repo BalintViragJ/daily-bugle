@@ -22,19 +22,19 @@ public class CategoryTypeService {
         return categoryList;
     }
 
-    public CategoryType getCategoryById(int id) {
-        CategoryType categoryType = categoryTypeRepository.getCategoryById(id);
+    public CategoryType findCategoryById(int id) {
+        CategoryType categoryType = categoryTypeRepository.findCategoryById(id);
         return categoryType;
 
     }
 
-    public CategoryType getCategoryByName(String name) {
-        CategoryType categoryType = categoryTypeRepository.getCategoryByName(name);
+    public CategoryType findCategoryByName(String name) {
+        CategoryType categoryType = categoryTypeRepository.findCategoryByName(name);
         return categoryType;
     }
 
     public boolean saveCategory(String name) {
-        if (categoryTypeRepository.getCategoryByName(name) == null) {
+        if (categoryTypeRepository.findCategoryByName(name) == null) {
             boolean saveSuccessful = categoryTypeRepository.saveCategory(name);
             return saveSuccessful;
         } else {

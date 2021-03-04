@@ -63,20 +63,37 @@ class CategoryTypeRepositoryTest {
     }
 
     @Test
-    void test_getCategoryById_notExists_null() {
+    void test_findCategoryById_notExists_null() {
         createDummyDataCategories();
-        assertNull(categoryTypeRepository.getCategoryById(5));
+        assertNull(categoryTypeRepository.findCategoryById(5));
     }
 
     @Test
-    void test_getCategoryById_Exists() {
+    void test_findCategoryById_Exists() {
         createDummyDataCategories();
 
         CategoryType expected = new CategoryType();
         expected.setId(2);
         expected.setName("zene");
 
-        assertEquals(expected, categoryTypeRepository.getCategoryById(2));
+        assertEquals(expected, categoryTypeRepository.findCategoryById(2));
+    }
+
+    @Test
+    void test_findCategoryByName_notExists_null() {
+        createDummyDataCategories();
+        assertNull(categoryTypeRepository.findCategoryByName("pletyka"));
+    }
+
+    @Test
+    void test_findCategoryByName_Exists() {
+        createDummyDataCategories();
+
+        CategoryType expected = new CategoryType();
+        expected.setId(2);
+        expected.setName("zene");
+
+        assertEquals(expected, categoryTypeRepository.findCategoryByName("zene"));
     }
 
     @Test
@@ -98,23 +115,5 @@ class CategoryTypeRepositoryTest {
 
         assertEquals(expected, actual);
         assertTrue(successful);
-
-    }
-
-    @Test
-    void test_getCategoryByName_notExists_null() {
-        createDummyDataCategories();
-        assertNull(categoryTypeRepository.getCategoryByName("pletyka"));
-    }
-
-    @Test
-    void test_getCategoryByName_Exists() {
-        createDummyDataCategories();
-
-        CategoryType expected = new CategoryType();
-        expected.setId(2);
-        expected.setName("zene");
-
-        assertEquals(expected, categoryTypeRepository.getCategoryByName("zene"));
     }
 }

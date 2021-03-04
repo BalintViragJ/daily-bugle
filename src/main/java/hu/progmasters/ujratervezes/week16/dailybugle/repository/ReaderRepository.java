@@ -7,10 +7,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Repository
 public class ReaderRepository {
 private final JdbcTemplate jdbcTemplate;
@@ -51,9 +53,9 @@ public List<Reader> getReaders(){
                 }
             }
             public boolean createReader(ReaderCreateData data){
-        String sql = "INSERT INTO reader (email, username, created, active) VALUES (?, ?, NOW(), 1)";
+        String sql = "INSERT INTO reader (email, username, created) VALUES (?, ?, NOW())";
         try {
-            int rowsAffected = jdbcTemplate.update(sql, data.getEmail(), data.getUsername(), data.getCreated(), data.isActive());
+            int rowsAffected = jdbcTemplate.update(sql, data.getEmail(), data.getUsername(), data.getCreated());
         return true;
         } catch (DataAccessException e){
 
@@ -63,7 +65,8 @@ public List<Reader> getReaders(){
     public boolean updateReader(int id, ReaderCreateData data) {
         String sql = "UPDATE reader SET email = ?, name = ?, edited = NOW(); WHERE id = ?";
         try {
-            int rowsAffected = jdbcTemplate.update(sql, data.getEmail(), data.getUsername(), data.getEdited(), id);
+            int rowsAffected = jdbcTemplate.update(sql,
+                    data.getEmail(), data.getUsername(), data.getEdited(), id);
             return rowsAffected == 1;
         } catch (DataAccessException e) {
             return false;
@@ -71,7 +74,7 @@ public List<Reader> getReaders(){
     }
 
     public boolean deleteReader(int id) {
-        String sql = "UPDATE reader SET active = 0; WHERE id = ?";
+        String sql = "DELETE FROM reader WHERE id = ?";
         try {
             int rowsAffected = jdbcTemplate.update(sql, id);
             return rowsAffected == 1;

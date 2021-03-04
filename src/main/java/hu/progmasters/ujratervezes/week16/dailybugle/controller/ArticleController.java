@@ -1,6 +1,7 @@
 package hu.progmasters.ujratervezes.week16.dailybugle.controller;
 
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Article;
+import hu.progmasters.ujratervezes.week16.dailybugle.domain.Rating;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.ArticleCreateData;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.ArticleLister;
 import hu.progmasters.ujratervezes.week16.dailybugle.service.ArticleService;
@@ -99,6 +100,14 @@ public class ArticleController {
     @GetMapping("/bestoffresh")
     public ResponseEntity<List<ArticleLister>> getBestOfFresh() {
         return new ResponseEntity<>(articleService.getBestOfFresh(), HttpStatus.OK);
+    }
+
+    @PostMapping("/rating")
+    public ResponseEntity<Void> makeRating(@RequestBody Rating rating){
+        if(articleService.makeRating(rating)){
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
 

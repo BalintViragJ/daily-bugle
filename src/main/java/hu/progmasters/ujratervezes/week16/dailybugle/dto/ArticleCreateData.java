@@ -11,6 +11,7 @@ public class ArticleCreateData {
     private String title;
     private String synopsis;
     private String text;
+    private double rating;
 
     public int getJournalistId() {
         return journalistId;
@@ -42,5 +43,13 @@ public class ArticleCreateData {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }

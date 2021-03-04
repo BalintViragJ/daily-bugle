@@ -37,25 +37,25 @@ public class JournalistRepository {
     }
 
     public JournalistProfile findJournalist(int id, List<ArticleLister> articleListers) {
-
         try {
             String sql = "SELECT j.id, j.name, j.address, j.email, j.telephone_number " +
                     "FROM journalist j WHERE j.id = ?";
-            return jdbcTemplate.queryForObject(sql, new Object[]{id}, ((resultSet, rowNumber) -> {
-              JournalistProfile journalistProfile = new JournalistProfile();
-              JournalistCreateData journalistCreateData = new JournalistCreateData();
+            JournalistCreateData journalistCreateData = new JournalistCreateData();
+            journalistCreateData = jdbcTemplate.queryForObject(sql, new Object[]{id}, ((resultSet, rowNumber) -> {
+                JournalistCreateData journalistCreateData2 = new JournalistCreateData();
 
-              journalistCreateData.setName(resultSet.getString("name"));
-              journalistCreateData.setAddress(resultSet.getString("address"));
-              journalistCreateData.setEmail(resultSet.getString("email"));
-              journalistCreateData.setTelephoneNumber(resultSet.getString("telephone_number"));
-
-              journalistProfile.setJournalistData(journalistCreateData);
-              journalistProfile.setArticleListOfJournalist(articleListers);
-              //TODO plusz lépés
-
-                return journalistProfile;
+                journalistCreateData2.setName(resultSet.getString("name"));
+                journalistCreateData2.setAddress(resultSet.getString("address"));
+                journalistCreateData2.setEmail(resultSet.getString("email"));
+                journalistCreateData2.setTelephoneNumber(resultSet.getString("telephone_number"));
+                return journalistCreateData2;
             }));
+
+            JournalistProfile journalistProfile = new JournalistProfile();
+            journalistProfile.setJournalistData(journalistCreateData);
+            journalistProfile.setArticleListOfJournalist(articleListers);
+            return journalistProfile;
+
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -123,7 +123,8 @@ public class JournalistRepository {
                 articleLister.setTitle(resultSet.getString("title"));
                 articleLister.setSynopsis(resultSet.getString("synopsis"));
                 return articleLister;
-            }return null;
+            }
+            return null;
         })));
             return articleListers;
     }

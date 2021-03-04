@@ -1,6 +1,7 @@
 package hu.progmasters.ujratervezes.week16.dailybugle.service;
 
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Article;
+import hu.progmasters.ujratervezes.week16.dailybugle.domain.Rating;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.ArticleCreateData;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.ArticleLister;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.RatingLister;
@@ -58,5 +59,13 @@ public class ArticleService {
     public List<ArticleLister> getBestOfFresh(){
         List<RatingLister> ratingListers = articleRepository.getBestOfTen();
         return articleRepository.listBestOfTen(ratingListers);
+    }
+
+    public boolean makeRating(Rating rating) {
+        boolean flag = false;
+        if (rating.getRating() > 0 && rating.getRating() < 6){
+            flag = articleRepository.makeRating(rating);
+        }
+        return flag;
     }
 }

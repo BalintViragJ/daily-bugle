@@ -51,7 +51,7 @@ public List<Reader> getReaders(){
                 }
             }
             public boolean createReader(ReaderCreateData data){
-        String sql = "INSERT INTO reader (email, username, created, active) VALUES (?, ?, NOW()), 1";
+        String sql = "INSERT INTO reader (email, username, created, active) VALUES (?, ?, NOW(), 1)";
         try {
             int rowsAffected = jdbcTemplate.update(sql, data.getEmail(), data.getUsername(), data.getCreated(), data.isActive());
         return true;
@@ -63,8 +63,7 @@ public List<Reader> getReaders(){
     public boolean updateReader(int id, ReaderCreateData data) {
         String sql = "UPDATE reader SET email = ?, name = ?, edited = NOW(); WHERE id = ?";
         try {
-            int rowsAffected = jdbcTemplate.update(sql,
-                    data.getEmail(), data.getUsername(), data.getEdited(), id);
+            int rowsAffected = jdbcTemplate.update(sql, data.getEmail(), data.getUsername(), data.getEdited(), id);
             return rowsAffected == 1;
         } catch (DataAccessException e) {
             return false;

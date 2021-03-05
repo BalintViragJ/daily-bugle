@@ -3,6 +3,7 @@ package hu.progmasters.ujratervezes.week16.dailybugle.repository;
 
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Article;
 import hu.progmasters.ujratervezes.week16.dailybugle.domain.Journalist;
+import hu.progmasters.ujratervezes.week16.dailybugle.domain.Rating;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.ArticleCreateData;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.ArticleLister;
 import hu.progmasters.ujratervezes.week16.dailybugle.dto.RatingLister;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.*;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
     private final JournalistRepository journalistRepository;
 
+
     @Autowired
     public ArticleRepository(JdbcTemplate jdbcTemplate, JournalistRepository journalistRepository) {
         this.jdbcTemplate = jdbcTemplate;
@@ -30,9 +33,9 @@ public class ArticleRepository {
     }
 
     public List<ArticleLister> listArticles() {
-        String query = "SELECT a.id, a.journalist_id, a.title, a.synopsis, a. active, j.name, " +
-                "j.address, j.email, j.telephone_number FROM article a JOIN journalist " +
-                "j ON a.journalist_id = j.id;";
+        String query = "SELECT a.id, a.journalist_id, a.title, a.synopsis, a.active, j.name, " +
+                "j.address, j.email, j.telephone_number, AVG(rating) as rating FROM article a JOIN journalist j " +
+                "ON a.journalist_id = j.id JOIN rating r ON a.id = r.article_id GROUP BY article_id;";
 
         return jdbcTemplate.query(query, ((resultSet, i) -> {
             Journalist journalist = new Journalist();
@@ -52,12 +55,14 @@ public class ArticleRepository {
             article.setTitle(resultSet.getString("title"));
             article.setSynopsis(resultSet.getString("synopsis"));
             article.setActive(resultSet.getBoolean("active"));
+            article.setRating(resultSet.getDouble("rating"));
 
             //set article for listing
             articleLister.setJournalistName(article.getJournalist().getName());
             articleLister.setId(article.getId());
             articleLister.setSynopsis(article.getSynopsis());
             articleLister.setTitle(article.getTitle());
+            articleLister.setRating(article.getRating());
             if (article.isActive()) {
                 return articleLister;
             }
@@ -69,8 +74,8 @@ public class ArticleRepository {
 
     public boolean saveArticle(ArticleCreateData data) {
         boolean flag = false;
-        String saveArticle = "INSERT INTO article (journalist_id, title, synopsis, text, created, edited, active) " +
-                "VALUES (?,?,?,?, now(), now(), TRUE);";
+        String saveArticle = "INSERT INTO article (journalist_id, title, synopsis, text, created, edited, active, rating) " +
+                "VALUES (?,?,?,?, now(), now(), TRUE, 0);";
 
         try {
             jdbcTemplate.update(saveArticle, data.getJournalistId(),
@@ -85,7 +90,7 @@ public class ArticleRepository {
 
     public Article findArticleById(int id) {
         String query = "SELECT a.id, a.journalist_id, a.title, a.synopsis, a.text, " +
-                "a.created, a.edited, a.active, j.name " +
+                "a.created, a.edited, a.active, a.rating j.name " +
                 "FROM article a JOIN journalist j ON a.journalist_id = j.id WHERE a.id=?;";
 
         return jdbcTemplate.queryForObject(query, new Object[]{id}, ((resultSet, i) -> {
@@ -98,7 +103,9 @@ public class ArticleRepository {
                     resultSet.getString("text"),
                     resultSet.getTimestamp("created"),
                     resultSet.getTimestamp("edited"),
+                    resultSet.getDouble("rating"),
                     resultSet.getBoolean("active")
+
 
             );
 
@@ -194,7 +201,7 @@ public class ArticleRepository {
     }
 
     public List<ArticleLister> getFresh() {
-        String sql = "SELECT a.id, a.title, a.synopsis, a.edited, j.name " +
+        String sql = "SELECT a.id, a.title, a.synopsis, a.edited, a.rating, j.name " +
                 "FROM article a JOIN journalist " +
                 "j ON a.journalist_id = j.id ORDER BY a.edited LIMIT 10 ";
 
@@ -204,6 +211,7 @@ public class ArticleRepository {
             articleLister.setJournalistName(resultSet.getString("name"));
             articleLister.setTitle(resultSet.getString("title"));
             articleLister.setSynopsis(resultSet.getString("synopsis"));
+            articleLister.setRating(resultSet.getDouble("rating"));
             return articleLister;
         }));
 
@@ -223,7 +231,7 @@ public class ArticleRepository {
     }
 
     public List<RatingLister> getBestOfTen(){
-        String query = "SELECT AVG(rating) AS rating, article_id, a.edited, " +
+        String query = "SELECT AVG(rating) AS rating, article_id, a.edited " +
                 "TIMESTAMPDIFF(HOUR, a.edited, now()) AS time " +
                 "FROM rating JOIN article a ON article_id = a.id " +
                 "GROUP BY article_id ORDER BY rating DESC LIMIT 10;";
@@ -240,7 +248,7 @@ public class ArticleRepository {
     }
 
     public List<ArticleLister> listTopTen(List<RatingLister> ratingListers){
-        String sql = "SELECT a.id, a.title, a.synopsis, a.edited, j.name " +
+        String sql = "SELECT a.id, a.title, a.synopsis, a.edited, a.rating, j.name " +
                 "FROM article a JOIN journalist " +
                 "j ON a.journalist_id = j.id WHERE a.id = ?;";
         List<ArticleLister> articleListers = new ArrayList<>();
@@ -254,6 +262,7 @@ public class ArticleRepository {
                 articleLister.setJournalistName(resultSet.getString("name"));
                 articleLister.setTitle(resultSet.getString("title"));
                 articleLister.setSynopsis(resultSet.getString("synopsis"));
+                articleLister.setRating(resultSet.getDouble("rating"));
                 return articleLister;
             })));
 
@@ -266,7 +275,7 @@ public class ArticleRepository {
     }
 
     public List<ArticleLister> listBestOfTen(List<RatingLister> ratingListers){
-        String sql = "SELECT a.id, a.title, a.synopsis, a.edited, j.name " +
+        String sql = "SELECT a.id, a.title, a.synopsis, a.edited, a.article, j.name " +
                 "FROM article a JOIN journalist " +
                 "j ON a.journalist_id = j.id WHERE a.id = ?;";
         List<ArticleLister> articleListers = new ArrayList<>();
@@ -281,6 +290,7 @@ public class ArticleRepository {
                     articleLister.setJournalistName(resultSet.getString("name"));
                     articleLister.setTitle(resultSet.getString("title"));
                     articleLister.setSynopsis(resultSet.getString("synopsis"));
+                    articleLister.setRating(resultSet.getDouble("rating"));
                     return articleLister;
                 })));
             }
@@ -290,5 +300,20 @@ public class ArticleRepository {
 
     }
 
+
+    public boolean makeRating(Rating rating) {
+        String sql = "INSERT INTO rating (rating, reader_id, article_id) " +
+                "VALUES (?,?,?);";
+        int success = 0;
+        try {
+            success = jdbcTemplate.update(sql, rating.getRating(), rating.getReaderId(), rating.getArticleId());
+        } catch (DataAccessException e){
+            //Szándékosan hagytam üresen. Jobb megoldást nem láttam.
+        }
+        if (success > 0){
+            return true;
+        }
+        return false;
+    }
 
 }

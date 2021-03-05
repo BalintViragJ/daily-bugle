@@ -4,26 +4,28 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 
 public class Article {
 
-        private int id;
-        @JsonIgnore
-        private Journalist journalist;
-        private String journalistName;
-        private String title;
-        private String synopsis;
-        private String text;
-        private Timestamp created;
-        private Timestamp edited;
-        private boolean active;
+    private int id;
+    @JsonIgnore
+    private Journalist journalist;
+    private String journalistName;
+    private String title;
+    private String synopsis;
+    private String text;
+    private Timestamp created;
+    private Timestamp edited;
+    private boolean active;
+    private double rating;
 
     public Article() {
 
     }
 
 
-    public Article(int id, String journalistName, String title, String synopsis, String text, Timestamp created, Timestamp edited, boolean active) {
+    public Article(int id, String journalistName, String title, String synopsis, String text, Timestamp created, Timestamp edited, double rating, boolean active) {
         this.id = id;
         this.journalistName = journalistName;
         this.title = title;
@@ -31,6 +33,7 @@ public class Article {
         this.text = text;
         this.created = created;
         this.edited = edited;
+        this.rating = rating;
         this.active = active;
     }
 
@@ -104,5 +107,13 @@ public class Article {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }

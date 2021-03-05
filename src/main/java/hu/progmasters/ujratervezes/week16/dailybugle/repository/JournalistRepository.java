@@ -40,7 +40,7 @@ public class JournalistRepository {
 
         try {
             String sql = "SELECT j.id, j.name, j.address, j.email, j.telephone_number " +
-                    "FROM journalist j WHERE j.id = ?";
+                    "FROM journalist j WHERE j.id = ?;";
             return jdbcTemplate.queryForObject(sql, new Object[]{id}, ((resultSet, rowNumber) -> {
               JournalistProfile journalistProfile = new JournalistProfile();
               JournalistCreateData journalistCreateData = new JournalistCreateData();
@@ -52,9 +52,9 @@ public class JournalistRepository {
 
               journalistProfile.setJournalistData(journalistCreateData);
               journalistProfile.setArticleListOfJournalist(articleListers);
-              //TODO plusz lépés
 
-                return journalistProfile;
+
+              return journalistProfile;
             }));
         } catch (EmptyResultDataAccessException e) {
             return null;

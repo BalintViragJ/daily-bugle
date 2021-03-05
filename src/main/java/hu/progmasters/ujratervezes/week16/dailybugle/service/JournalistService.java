@@ -22,6 +22,9 @@ public class JournalistService {
 
     private TelephonesOfJournalist telephonesOfJournalist;
 
+    public JournalistService(JournalistRepository journalistRepository) {
+    }
+
     @Autowired
     public JournalistService(JournalistRepository journalistRepository, TelephonesOfJournalist telephonesOfJournalist) {
         this.journalistRepository = journalistRepository;
@@ -36,7 +39,6 @@ public class JournalistService {
 
     public JournalistProfile findJournalist(int id) {
         List<ArticleLister> articleListers = journalistRepository.getArticleOfJournalist(id);
-
 
         return journalistRepository.findJournalist(id, articleListers);
     }
